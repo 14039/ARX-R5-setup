@@ -1,46 +1,28 @@
 Here are instructions to get the ARX R5 arm functioning using this repository. Created by Nate and Ashley on 25/08/01.
 
-
 ## Prerequisites
-- ARX R5 arm connected via USB (through CAN adapter)
-- Power supply connected (red lights on power board and arm should be on)
-- Green light on CAN adapter should be on
+- ARX R5 arm plugged in via USB (through CAN adapter) and powered on
+- Python 3 with pybind11 installed (`pip install pybind11`)
 
-## Simple Setup Process
+## Quick Start
 
-### Step 0: Find your CAN adapter device
+### Terminal 1: Set up CAN interface
 ```bash
-# Check which device your CAN adapter is connected as:
-ls -la /dev/ttyACM* /dev/ttyUSB*
+# Find your CAN adapter device (usually /dev/ttyACM0 or /dev/ttyACM1)
+ls /dev/ttyACM*
 
-# You should see something like /dev/ttyACM0, /dev/ttyACM1, or /dev/ttyUSB0
-# If multiple devices are shown, unplug the CAN adapter, run the command again,
-# then plug it back in and run once more to see which device appears
-```
-
-### Step 1: Set up CAN interface
-```bash
-# Replace /dev/ttyACM0 with your actual device from Step 0
-
-# This creates a CAN network interface from your USB device
+# Set up CAN interface (replace /dev/ttyACM0 with your device)
 sudo slcand -o -f -s8 /dev/ttyACM0 can0
-
-# This activates the CAN interface (use 'ip' instead of deprecated 'ifconfig')
 sudo ip link set can0 up
 ```
 
-### Step 2: In a new terminal, run the Python test
+### Terminal 2: Run the test
 ```bash
-# Go to the Python SDK directory
-cd /home/vassar/code/R5/py/ARX_R5_python
+# Navigate to Python SDK ( cd /home/vassar/code/R5/py/ARX_R5_python )
+cd py/ARX_R5_python
 
-# Set up the environment (combines setup.sh and PYTHONPATH)
-source setup.sh && export PYTHONPATH=$(pwd)/bimanual/api:$PYTHONPATH
-
-# If using conda, activate your environment that has the dependencies
-conda activate kscale  # or whichever environment has pybind11, etc.
-
-# Run the keyboard control test
+# Set up environment and run
+source setup.sh ( may also need: export PYTHONPATH=$(pwd)/bimanual/api/arx_r5_python:$PYTHONPATH )
 python test_keyboard.py
 ```
 

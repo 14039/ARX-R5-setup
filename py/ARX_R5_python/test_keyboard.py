@@ -6,8 +6,8 @@ import curses
 import time
 
 arm_config: Dict[str, Any] = {
-    "can_port": "can1",
-    "type": 0,
+    "can_port": "can0",  # Updated to your CAN interface
+    "type": 1,           # 1 for R5 robot
     # Add necessary configuration parameters for the left arm
 }
 single_arm = SingleArm(arm_config)
